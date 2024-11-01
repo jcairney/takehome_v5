@@ -1,6 +1,7 @@
 # Takehome v5
 To run the program:
 `gem install json`
+
 `ruby challenge.rb companies.json users.json`
 ## Notes
 * This is my first time writing Ruby.

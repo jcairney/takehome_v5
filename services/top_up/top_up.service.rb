@@ -1,18 +1,31 @@
 require_relative "user_top_up_result"
 require_relative "company_top_up_result"
 
+##
+# Namespace for the service and associated classes.
 module TopUp
-    
 end
 
+##
+# A service to update user token balances with their companies' preset top up 
+# ammounts.
 class TopUp::TopUpService
 
+  ##
+  # Initializes the service with data collections and an output stream
+  # 
+  # Params:
+  #  * <tt>companies</tt> - A <tt>Companies</tt> collection.
+  #  * <tt>users</tt> - A <tt>Users</tt> collection.
+  #  * <tt>output</tt> - A <tt>File</tt> handle, opened for writing
   def initialize(companies:, users:, output:)
       @companies = companies
       @users = users
       @output = output
   end
 
+  ##
+  # Performs a top up of all users for each company in the companies collection.
   def top_up_all_companies()
     @output.write("\n")
 
@@ -46,6 +59,11 @@ class TopUp::TopUpService
   end
 
   private
+  ##
+  # Tops up all users for a single company
+  # 
+  # Params:
+  #  * <tt>company</tt> - The <tt>Company</tt> object for which to top up users. 
   def top_up_company(company)
     if company.nil? || company.id.nil?
       puts "Error: Could not top up because company or company ID is nil.  Skipping."
@@ -69,6 +87,13 @@ class TopUp::TopUpService
     company_top_up_result
   end
 
+  ##
+  # Tops up the balance of a single user and returns a <tt>TopUp::UserTopUpResult</tt>.
+  # 
+  # Params:
+  #  * <tt>user</tt> - A <tt>User</tt> to top up 
+  #  * <tt>amount</tt> - The user's company's top up ammount 
+  #  * <tt>file_name</tt> - The user's company's <tt>email_status</tt>
   def top_up_user(user, amount, company_email_status)
     # Initialize result container for user
     user_top_up_result = TopUp::UserTopUpResult.new user
@@ -90,15 +115,27 @@ class TopUp::TopUpService
       # email the user, and mark that we did, if successful
       user_top_up_result.emailed = email_user user
     end
-    
+
     user_top_up_result
   end
 
+  ##
+  # A stub method for emailing a user
+  # 
+  # Params:
+  #  * <tt>user</tt> - The <tt>User</tt> to email. 
   def email_user(user)
     # do nothing in this version
     true
   end
 
+  ##
+  # Prints a section of the report specific to to a user, displaying Last Name, First
+  # Name, email, previous token balance, and new token balance.
+  # 
+  # Params:
+  #  * <tt>user_top_up_result</tt> - A <tt>TopUp::UserTopUpResult</tt> containing the information 
+  #  to display. 
   def print_user_top_up_results_report user_top_up_result
     @output.write("\t\t#{user_top_up_result.user.last_name}, #{user_top_up_result.user.first_name}, #{user_top_up_result.user.email}\n")
     @output.write("\t\t  Previous Token Balance, #{user_top_up_result.previous_balance}\n")

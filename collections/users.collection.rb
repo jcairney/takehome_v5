@@ -1,6 +1,13 @@
 require_relative('../models/user.model')
-
+##
+# A collection of <tt>User</tt> objects, with methods for retrieving all users based on
+# a certain search field.
 class Users
+  ##
+  # Initializes the collection, turning hashed JSON into proper <tt>User</tt> objects.
+  # 
+  #Params:
+  #  * <tt>companies_hash</tt> - A hash from JSON.parse(), containing a list of users.
   def initialize(users_hash)
     @users_by_id = Hash.new
     # We want a hash with an array of users as value for each company ID used as key
@@ -37,6 +44,12 @@ class Users
     end
   end
   
+  ##
+  # Returns an array of <tt>User</tt> associated with the provided company ID.  The
+  # array will be sorted by Last Name, then First Name.
+  # 
+  # Params:
+  #  * <tt>company_id</tt> - The ID of the company for which to find users. 
   def users_by_company_id(company_id)
     # Look up the list of users for this company ID, and sort it by Last Name, then First Name.
     @users_by_company_id[company_id].sort{ |a,b| "#{a.last_name}, #{a.first_name}" <=> "#{b.last_name}, #{b.first_name}" }

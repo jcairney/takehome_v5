@@ -5,10 +5,28 @@ require_relative 'services/top_up/top_up.service'
 require_relative 'collections/users.collection'
 require_relative 'collections/companies.collection'
 
+##
+# This is the answer code for Takehome v5.  See challenge.txt for the requirements.
+# 
+# This program reads in a JSON list of companies from a file, provided as command line
+# argument 1, and a JSON list of users from a file, provided as command line argument 2,
+# and pretends to top up the token amount of each user, with each company's top up amount.
+# A report is produced indicating changes to users' token balances, but the changes to 
+# the users' balances are not stored back to the harddrive. 
+
+
+##
+# Prints the instructions for running the program
 def print_instructions
   puts "Use: ruby challenge.rb companies.json users.json"
 end
 
+##
+# Opens a file for writing, and ensures it is closed once the passed block is executed,
+# and even if the block errors out.
+# 
+# Params:
+#  * <tt>file_name</tt> - The name of the file to open for writing
 def with_file_out(file_name)
   file = open(file_name, 'w')
   yield(file)
@@ -16,6 +34,9 @@ ensure
   file.close if file
 end
 
+##
+# -- MAIN --
+#
 if __FILE__ == $0
     begin
       # check if arg 1 exists

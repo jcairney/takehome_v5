@@ -1,6 +1,14 @@
 require_relative '../models/company.model'
 
+##
+# A collection of <tt>Company</tt> objects, with methods for retrieving the list of companies
+# in ordered by one property or another.
 class Companies
+  ##
+  # Initializes the collection, turning hashed JSON into proper <tt>Company</tt> objects.
+  # 
+  #Params:
+  # * <tt>companies_hash</tt> - A hash from JSON.parse(), containing a list of companies.
   def initialize(companies_hash)
     @companies_by_id = Hash.new
 
@@ -24,6 +32,8 @@ class Companies
     end
   end
 
+  ##
+  # Returns the full list of companies, sorted alphabetically by ID.
   def all_companies_by_id
     # return array of key value pairs from the hash, sorted by company ID
     @companies_by_id.sort_by { |key| key.to_s }

@@ -1,3 +1,5 @@
+##
+# Structure to store information about a user.
 class User
     attr_reader :id # number
 		attr_reader :first_name # string
@@ -9,6 +11,9 @@ class User
 		attr_accessor :tokens # number
 
     # TODO: Use Struct to reduce boilerplate?
+    
+    ##
+    # Initializes the User with a set of fields.
     def initialize(id:, first_name:"", last_name:"", email: nil, company_id:, email_status: false, active_status: false, tokens: 0)
       @id = id
       @first_name = first_name
@@ -22,6 +27,8 @@ class User
       validate!
     end
 
+    ##
+    # Validates the inputs to the User initializer.
     def validate!
       context = "Error processing user ID: #{@id}:" # Do not include users' names in logs, for HIPAA reasons
       raise ArgumentError.new("#{context} id field must exist.") if @id.nil?
